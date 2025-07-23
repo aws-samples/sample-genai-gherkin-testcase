@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+touch /home/ec2-user/anaconda3/envs/python3/etc/conda/activate.d/env_vars.sh
+echo "export model_id='${inference_model_arn}'" >> /home/ec2-user/anaconda3/envs/python3/etc/conda/activate.d/env_vars.sh
