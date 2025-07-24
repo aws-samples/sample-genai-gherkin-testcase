@@ -56,6 +56,7 @@ resource "aws_iam_role" "notebook_role" {
   }
 }
 
+
 resource "aws_security_group" "notebook_security_group" {
   name_prefix = "${local.name}-sg"
   vpc_id      = local.vpc_id
@@ -70,13 +71,40 @@ resource "aws_security_group" "notebook_security_group" {
   }
 }
 
+resource "aws_iam_policy" "repository_secrets_manager_policy" {
+  count       = local.default_code_repository_url !=null && local.secrets_manager_arn != null ? 1 : 0
+  name_prefix = "${local.name}-secrets-manager-"
+  description = "Policy for accessing Secrets Manager"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetSecretValue"
+        ]
+        Resource = [
+          local.secrets_manager_arn
+        ]
+      }
+    ]
+  })
+  tags = local.tags
+}
+
+resource "aws_iam_role_policy_attachment" "repository_secrets_manager_policy_attachment" {
+  count      = local.default_code_repository_url !=null && local.secrets_manager_arn != null ? 1 : 0
+  role       = aws_iam_role.notebook_role.name
+  policy_arn = aws_iam_policy.repository_secrets_manager_policy[0].arn
+}
+
 resource "aws_sagemaker_code_repository" "repository" {
   count                = local.default_code_repository_url == null ? 0 : 1
   code_repository_name = "${local.name}-github-repo"
 
   git_config {
     repository_url = local.default_code_repository_url
-    secret_arn     = local.secrets_manager_arn
+    secret_arn = local.secrets_manager_arn
   }
 }
 

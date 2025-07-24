@@ -44,7 +44,7 @@ Components:<br/>
 #### Deploy Infrastructure:
 
 ```
-git clone <repository-url>
+git clone https://github.com/aws-samples/sample-genai-gherkin-testcase.git
 cd terraform
 terraform init
 terraform apply
@@ -60,20 +60,20 @@ terraform apply
 #### Generate Tests
 
 * Add API Specification:
-* Upload your OpenAPI/Swagger JSON file in input/ folder
+* Upload your OpenAPI/Swagger JSON file in **input** folder
 
 #### Run Generation:
 
 * Execute notebook cells sequentially
-* Customize prompts in prompts/ if needed
-* Modify templates in prompts/ to:
+* Customize prompts in **prompts** if needed
+* Modify templates in prompts to:
   * Change output format
   * Add custom validation logic
   * Support additional API patterns
 
 * Collect Output:
-  * Gherkin features: output/features/
-  * Java step definitions: output/stubs/
+  * Gherkin features: **output/features/**
+  * Java step definitions: **output/stubs/**
 
 ## Security
 
