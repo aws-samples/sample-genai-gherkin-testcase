@@ -39,6 +39,20 @@ resource "aws_iam_role" "notebook_role" {
           ]
         },
         {
+          "Action" : [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+            "logs:DescribeLogGroups",
+            "logs:DescribeLogStreams"
+          ],
+          "Effect" : "Allow",
+          "Resource" : [
+            "arn:aws:logs:${local.region}:${local.account}:log-group:/aws/sagemaker/NotebookInstances",
+            "arn:aws:logs:${local.region}:${local.account}:log-group:/aws/sagemaker/NotebookInstances:log-stream:*"
+          ]
+        },
+        {
           "Effect" : "Allow",
           "Action" : [
             "kms:Encrypt",
