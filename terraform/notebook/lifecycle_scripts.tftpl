@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+sudo -u ec2-user -i <<'EOF'
+
+source /home/ec2-user/anaconda3/bin/activate python3
+
+pip3 install Path
+pip3 install botocore==1.37.33 boto3==1.37.33
+pip3 install ipywidgets
+
+source /home/ec2-user/anaconda3/bin/deactivate
+EOF
+
+touch /home/ec2-user/anaconda3/envs/python3/etc/conda/activate.d/env_vars.sh
+echo "export model_id='${inference_model_arn}'" >> /home/ec2-user/anaconda3/envs/python3/etc/conda/activate.d/env_vars.sh
